@@ -16,22 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.views import health_chek, AboutView, forbiden_view
+from core.views import health_check, AboutView, forbidden_view
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from rest_framework.routers import DefaultRouter
 from tracker.views import TaskViewSet
 
-router = DefaultRouter()
-router.register(r'task')
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("health/", health_chek),
+    path('admin/', admin.site.urls),
+    path('health/', health_check),
     path('about/', AboutView.as_view()),
-    path('forbidden/', forbidden_view)
-    path('api/token/', TokenObtainPairView.as_view(),
-         name='token_obtain_pair')
-    path('api/token/refresh/', TokenRefreshView.as_view(), name="token_refresh")
-    path('api/', include(router.urls)),
-
+    path('forbidden/', forbidden_view),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include('tracker.urls')),
 ]
