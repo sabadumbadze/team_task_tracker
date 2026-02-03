@@ -13,7 +13,8 @@
 *   **Custom Django Admin:** გაფართოებული ადმინ-პანელი ძებნისა და ფილტრაციის ფუნქციით.
 
 ## 🛠 ტექნოლოგიური სთეკი
-*   **Framework:** Django, Django REST Framework (DRF)
+*   **Framework:** Django, Django REST Framework (DRF)git commit -m "Add professional README documentation"
+
 *   **Auth:** SimpleJWT
 *   **Database:** SQLite (Development)
 *   **Tools:** Django-filter, Python 3.x
