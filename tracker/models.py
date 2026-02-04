@@ -1,10 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='owned_teams'
+    )
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='joined_teams'
+    )
 
     def __str__(self):
         return self.name
@@ -12,9 +22,12 @@ class Team(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='profile')
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='tracker_profile'
+    )
     team = models.ForeignKey(
-        Team, on_delete=models.CASCADE, related_name='members')
+        Team, on_delete=models.SET_NULL, null=True, related_name='team_profiles')
     role = models.CharField(max_length=100)
 
     def __str__(self):
@@ -36,6 +49,12 @@ class Task(models.Model):
         Profile, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     is_done = models.BooleanField(default=False)
+
+    description = models.TextField()
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

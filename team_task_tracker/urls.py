@@ -20,14 +20,22 @@ from core.views import health_check, AboutView, forbidden_view
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from rest_framework.routers import DefaultRouter
 from tracker.views import TaskViewSet
-
+from core.views import health_check, AboutView, forbidden_view, RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('health/', health_check),
     path('about/', AboutView.as_view()),
     path('forbidden/', forbidden_view),
+
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('tracker.urls')),
+
+    path('api/register/', RegisterView.as_view(), name='register'),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('api/tracker/', include('tracker.urls')),
 ]
